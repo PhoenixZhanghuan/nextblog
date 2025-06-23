@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { PrismaClient } from '@prisma/client'
+import { NextRequest, NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
@@ -47,7 +47,8 @@ export async function POST(request: NextRequest) {
         username: user.username
       }
     })
-  } catch {
+  } catch (error) {
+    console.error('Login error:', error)
     return NextResponse.json(
       { error: '服务器错误' },
       { status: 500 }
