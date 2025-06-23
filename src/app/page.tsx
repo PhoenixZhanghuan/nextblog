@@ -1,36 +1,89 @@
+'use client'
+
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import Header from './components/Header'
 
+interface User {
+  id: string
+  username: string
+  email: string
+}
+
 export default function Home() {
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const userData = localStorage.getItem('user')
+    if (token && userData) {
+      setUser(JSON.parse(userData))
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6">
-            欢迎来到 <span className="text-blue-600">NextBlog</span>
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            一个现代化的博客平台，基于 Next.js 15 和 Prisma 构建。
-            在这里分享你的想法，发现有趣的内容。
-          </p>
-          
-          <div className="flex justify-center space-x-4">
-            <Link
-              href="/posts"
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              浏览博客
-            </Link>
-            <Link
-              href="/register"
-              className="bg-green-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
-            >
-              开始写作
-            </Link>
+        {user ? (
+          // 登录用户看到的内容
+          <div className="text-center">
+            <h1 className="text-5xl font-bold text-gray-900 mb-6">
+              欢迎回来，<span className="text-blue-600">{user.username}</span>！
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              准备好分享你的想法了吗？从控制台开始管理你的博客。
+            </p>
+            
+            <div className="flex justify-center space-x-4">
+              <Link
+                href="/dashboard"
+                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              >
+                进入控制台
+              </Link>
+              <Link
+                href="/posts/new"
+                className="bg-green-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
+              >
+                写新文章
+              </Link>
+              <Link
+                href="/posts"
+                className="bg-gray-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-700 transition-colors"
+              >
+                浏览博客
+              </Link>
+            </div>
           </div>
-        </div>
+        ) : (
+          // 未登录用户看到的内容
+          <div className="text-center">
+            <h1 className="text-5xl font-bold text-gray-900 mb-6">
+              欢迎来到 <span className="text-blue-600">NextBlog</span>
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+              一个现代化的博客平台，基于 Next.js 15 和 Prisma 构建。
+              在这里分享你的想法，发现有趣的内容。
+            </p>
+            
+            <div className="flex justify-center space-x-4">
+              <Link
+                href="/posts"
+                className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              >
+                浏览博客
+              </Link>
+              <Link
+                href="/register"
+                className="bg-green-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-green-700 transition-colors"
+              >
+                开始写作
+              </Link>
+            </div>
+          </div>
+        )}
         
         <div className="mt-16 grid md:grid-cols-3 gap-8">
           <div className="text-center">
