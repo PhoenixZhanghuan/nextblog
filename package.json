@@ -6,13 +6,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migrate": "prisma migrate dev",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset"
   },
   "dependencies": {
     "@prisma/client": "^6.10.1",
     "bcryptjs": "^3.0.2",
     "jsonwebtoken": "^9.0.2",
     "next": "15.3.4",
+    "pg": "^8.11.3",
     "prisma": "^6.10.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -23,6 +28,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^20",
+    "@types/pg": "^8.10.9",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
