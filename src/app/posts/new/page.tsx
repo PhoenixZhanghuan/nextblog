@@ -19,7 +19,7 @@ export default function NewPostPage() {
     if (!token) {
       router.push('/login')
     }
-  }, [])
+  }, [router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

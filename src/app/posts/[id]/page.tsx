@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Header from '../../components/Header'
@@ -23,19 +23,8 @@ export default function PostDetailPage() {
   const [post, setPost] = useState<Post | null>(null)
   const [loading, setLoading] = useState(true)
   const [currentUser, setCurrentUser] = useState<{id: string; username: string} | null>(null)
-
-  useEffect(() => {
-    const userData = localStorage.getItem('user')
-    if (userData) {
-      setCurrentUser(JSON.parse(userData))
-    }
-    
-    if (params.id) {
-      fetchPost(params.id as string)
-    }
-  }, [params.id])
-
-  const fetchPost = async (id: string) => {
+  
+  const fetchPost = useCallback(async (id: string) => {
     try {
       const response = await fetch(`/api/posts/${id}`)
       if (response.ok) {
@@ -50,7 +39,18 @@ export default function PostDetailPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [router])
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user')
+    if (userData) {
+      setCurrentUser(JSON.parse(userData))
+    }
+    
+    if (params.id) {
+      fetchPost(params.id as string)
+    }
+  }, [fetchPost, params.id, router])
 
   const handleDelete = async () => {
     if (!confirm('确定要删除这篇文章吗？')) return

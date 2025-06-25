@@ -26,7 +26,7 @@ export default function Dashboard() {
     
     setUser(JSON.parse(userData))
     setLoading(false)
-  }, [])
+  }, [router])
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">加载中...</div>

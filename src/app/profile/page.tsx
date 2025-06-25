@@ -40,7 +40,7 @@ export default function ProfilePage() {
 
     setUser(JSON.parse(userData))
     fetchUserPosts()
-  }, [])
+  }, [router])
 
   const fetchUserPosts = async () => {
     try {

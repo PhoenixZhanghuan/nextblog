@@ -26,7 +26,7 @@ export default function MyPostsPage() {
       return
     }
     fetchMyPosts()
-  }, [])
+  }, [router])
 
   const fetchMyPosts = async () => {
     try {

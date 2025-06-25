@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Header from '../../../components/Header'
 
@@ -28,25 +28,7 @@ export default function EditPostPage() {
   const [error, setError] = useState('')
   const [currentUser, setCurrentUser] = useState<{id: string} | null>(null)
 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    const userData = localStorage.getItem('user')
-    
-    if (!token) {
-      router.push('/login')
-      return
-    }
-    
-    if (userData) {
-      setCurrentUser(JSON.parse(userData))
-    }
-    
-    if (params.id) {
-      fetchPost(params.id as string)
-    }
-  }, [params.id])
-
-  const fetchPost = async (id: string) => {
+    const fetchPost = useCallback(async (id: string) => {
     try {
       const response = await fetch(`/api/posts/${id}`)
       if (response.ok) {
@@ -64,7 +46,25 @@ export default function EditPostPage() {
       console.error('获取博客详情失败:', error)
       router.push('/posts')
     }
-  }
+  }, [router])
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    const userData = localStorage.getItem('user')
+    
+    if (!token) {
+      router.push('/login')
+      return
+    }
+    
+    if (userData) {
+      setCurrentUser(JSON.parse(userData))
+    }
+    
+    if (params.id) {
+      fetchPost(params.id as string)
+    }
+  }, [fetchPost, params.id, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

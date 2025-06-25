@@ -7,7 +7,8 @@ const prisma = new PrismaClient()
 // 获取单个博客
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { params }: { params: any }
 ) {
   try {
     const post = await prisma.post.findUnique({
@@ -42,7 +43,8 @@ export async function GET(
 // 更新博客
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { params }: { params: any }
 ) {
   try {
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
@@ -105,7 +107,8 @@ export async function PUT(
 // 删除博客
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  { params }: { params: any }
 ) {
   try {
     const token = request.headers.get('authorization')?.replace('Bearer ', '')
